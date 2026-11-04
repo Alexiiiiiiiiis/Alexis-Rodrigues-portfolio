@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Alexis Rodrigues — Portfolio
 
-## Getting Started
+Portfolio de développeur full-stack : mes compétences, mes projets et mon parcours, avec une page détaillée pour chaque projet.
 
-First, run the development server:
+**Stack :** Next.js 16 · React 19 · TypeScript · Tailwind CSS 4
+
+## Pages
+
+| Page | Contenu |
+| --- | --- |
+| `/` | Présentation, technologies et projets phares |
+| `/competences` | Compétences par domaine, avec filtre des projets par technologie |
+| `/parcours` | Frise chronologique des projets, mois par mois |
+| `/contact` | Liens pour me contacter |
+| `/projets/<slug>` | Détail d'un projet : contexte, fonctionnalités, ma part, difficultés et captures |
+
+## Lancer le projet
+
+Prérequis : Node.js 20.9 ou plus récent.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site est alors disponible sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Commande | Rôle |
+| --- | --- |
+| `npm run dev` | Serveur de développement |
+| `npm run build` | Build de production |
+| `npm run start` | Lance le build de production |
+| `npm run lint` | Vérifie le code avec ESLint |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Structure
 
-## Learn More
+```
+src/
+├── app/            # Pages (App Router)
+│   ├── competences/
+│   ├── contact/
+│   ├── parcours/
+│   └── projets/[slug]/
+├── components/     # Composants de l'interface
+└── data/
+    ├── portfolio.ts         # Profil, compétences et liste des projets
+    └── project-details.ts   # Contenu des pages de détail
+public/projets/     # Captures d'écran des projets
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Modifier le contenu
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tout le contenu est dans `src/data/`, aucune page n'est à toucher :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Ajouter un projet** : ajoute-le dans `projects` (`portfolio.ts`) avec son `slug` et les ids des compétences utilisées. Sa page `/projets/<slug>` est générée automatiquement.
+- **Détailler un projet** : ajoute une entrée avec le même `slug` dans `project-details.ts`.
+- **Ajouter des captures** : dépose les images dans `public/projets/<dossier>/` et référence-les dans le champ `images` du projet.
+- **Coordonnées** : renseigne `email` et `linkedin` dans `profile` pour les afficher sur la page contact.
 
-## Deploy on Vercel
+## Branches
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `main` : version en production
+- `dev` : intégration des nouvelles fonctionnalités, une branche par fonctionnalité
