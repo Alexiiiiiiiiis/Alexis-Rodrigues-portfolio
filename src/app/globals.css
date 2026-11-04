@@ -1,26 +1,127 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-ink: #07070b;
+  --color-ink-2: #0e0e15;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-muted: #8b8b9e;
+  --color-fg: #ececf3;
+  --color-accent: #a78bfa;
+  --color-accent-2: #22d3ee;
+  --color-accent-3: #f472b6;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: var(--color-fg);
+}
+
+::selection {
+  background: rgb(167 139 250 / 0.35);
+}
+
+/* Grille de fond discrète */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #fff 10%, var(--color-accent) 45%, var(--color-accent-2) 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Halo qui suit la souris sur les cartes */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(167 139 250 / 0.14),
+    transparent 60%
+  );
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+/* Apparition au scroll (voir Reveal.tsx) */
+.reveal {
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal[data-shown="false"] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Apparition du hero au chargement, en CSS pur (pas besoin d'attendre le JS) */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+.fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+.card-in {
+  animation: card-in 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .fade-up,
+  .card-in {
+    animation: none;
+  }
+  .reveal {
+    transition: none;
+  }
+  .reveal[data-shown="false"] {
+    opacity: 1;
+    transform: none;
+  }
 }
